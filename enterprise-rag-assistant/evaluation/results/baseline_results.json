@@ -1,0 +1,18 @@
+{
+  "hit_at_1": 0.43333333333333335,
+  "hit_at_3": 0.7333333333333333,
+  "hit_at_5": 0.7333333333333333,
+  "recall_at_1": 0.4,
+  "recall_at_3": 0.6833333333333333,
+  "recall_at_5": 0.7166666666666667,
+  "mrr": 0.55,
+  "answer_correctness": 0.05309887230604276,
+  "groundedness": 0.6792972829230657,
+  "citation_correctness": 0.7,
+  "hallucination_rate": 1.0,
+  "unanswerable_correct_rate": 0.0,
+  "avg_latency_ms": 13.927530016129216,
+  "avg_ret_latency_ms": 13.862066646106541,
+  "avg_gen_latency_ms": 0.06363334444661935,
+  "cost_per_query": 0.00015
+}

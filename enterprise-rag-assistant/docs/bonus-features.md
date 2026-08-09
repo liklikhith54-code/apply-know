@@ -1,0 +1,16 @@
+# RAG Assistant Bonus Features
+
+This log outlines the implementation status, verification evidence, and production recommendations for each of the bonus features requested.
+
+| Bonus Feature | Status | Evidence / Verification Test | Production Notes |
+| :--- | :--- | :--- | :--- |
+| **1. Query Rewriting** | **Implemented & Verified in Mock Mode** | Verified in `test_query_rewriter_mock` inside `tests/test_rag.py`. Evaluator rewrites follow-up questions during evaluations. | Uses Azure OpenAI (GPT-4o/mini) deployments to contextually rewrite query paths based on user history in production. |
+| **2. Azure AI Search Hybrid Search** | **Implemented & Scoped** | Code integrated inside `Retriever._retrieve_azure` in `app/rag/retriever.py` blending vector and keyword queries. | Set `MOCK_AZURE_SERVICES=False` in `.env` to execute live Azure hybrid queries. Requires configured Search Admin Index keys. |
+| **3. Semantic Ranking/Reranking** | **Implemented & Scoped** | Integrated using the native Azure AI Search `SemanticConfiguration` inside `app/rag/retriever.py` and mocked in `evaluate.py`. | Production queries leverage the actual Azure AI Search Semantic Ranker instead of local heuristic models. |
+| **4. Metadata Filtering** | **Implemented & Verified** | Verified in `test_retriever_versioning` inside `tests/test_retrieval.py` discarding outdated versions. | Documents are tagged during ingestion with `version` and `effective_date`. Filtering occurs pre-retrieval in Azure indexers. |
+| **5. Confidence Scoring** | **Implemented & Verified** | Tested in `test_confidence_scorer_thresholds` in `tests/test_rag.py` and verified in evaluation benchmarks. | Employs multi-factor calculations combining ranking scores, reranking scores, question coverage, and document consistency. |
+| **6. Guardrails / Grounded-Answer Protection** | **Implemented & Verified** | Verified in `test_generator_mock_groundedness` inside `tests/test_rag.py` blocking low-relevance responses. | Enforces strict boundaries to return standard negative/abstention answers for unanswerable requests, reducing hallucinations. |
+| **7. Document-Level Access Control** | **Implemented & Verified** | Tested in `test_retriever_access_control` inside `tests/test_retrieval.py` validating department limits. | User group claims and departments mapped from Microsoft Entra tokens are passed to `OData` pre-retrieval filter strings. |
+| **8. Automated RAG Evaluation** | **Implemented & Verified** | Verified in `tests/test_evaluation.py` and triggered via CLI script `python -m evaluation.evaluate`. | Automatically outputs machine-readable JSON metrics and human-readable reports comparing baseline and improved runs. |
+| **9. Application Insights Observability** | **Implemented & Verified** | Configured `APPLICATIONINSIGHTS_CONNECTION_STRING` parameter in `config.py` and structured request logging. | Structured request telemetry (RequestID, Latency, Retrieval Latency, Generation Latency, Token count) is outputted in API endpoints. |
+| **10. Secure Response Caching** | **Implemented & Verified** | Tested in `test_response_cache_flow` in `tests/test_bonus.py` and bound to the API `/chat` endpoint. | Response Cache keys are scoped to user identity criteria `(query, sorted_groups, user_dept)` preventing privilege leak. |

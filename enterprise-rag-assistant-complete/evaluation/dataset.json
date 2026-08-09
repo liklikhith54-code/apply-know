@@ -1,0 +1,242 @@
+[
+  {
+    "question": "What is the annual leave allocation for employees in the 2026 Leave Policy?",
+    "expected_answer": "According to the 2026 Leave Policy, employees are entitled to 20 days of annual leave.",
+    "expected_documents": ["Leave_Policy_2026.pdf"],
+    "expected_sections": ["Vacation Time"],
+    "question_type": "straightforward",
+    "difficulty": "easy"
+  },
+  {
+    "question": "Compare the refund policy for Enterprise and Standard plans.",
+    "expected_answer": "The Enterprise plan allows up to 100% refund within 30 days, while the Standard plan has a 50% refund limit within 14 days.",
+    "expected_documents": ["Enterprise_Policy.pdf", "Standard_Policy.pdf"],
+    "expected_sections": ["Refunds", "Cancellation"],
+    "question_type": "multi-document",
+    "difficulty": "hard"
+  },
+  {
+    "question": "What is the transaction expense limit in the expense policy?",
+    "expected_answer": "The transaction limit is capped at $500 per transaction.",
+    "expected_documents": ["Expense_Policy_2026.pdf"],
+    "expected_sections": ["Expense Limits"],
+    "question_type": "straightforward",
+    "difficulty": "medium"
+  },
+  {
+    "question": "What is the limit?",
+    "expected_answer": "I found multiple possible limits in the knowledge base. Do you mean the expense limit or the refund limit?",
+    "expected_documents": ["Expense_Policy_2026.pdf", "Enterprise_Policy.pdf"],
+    "expected_sections": ["Expense Limits", "Refunds"],
+    "question_type": "ambiguous",
+    "difficulty": "medium"
+  },
+  {
+    "question": "How many remote working days are allowed under the HR guideline?",
+    "expected_answer": "I couldn't find sufficient information in the knowledge base to answer this question.",
+    "expected_documents": [],
+    "expected_sections": [],
+    "question_type": "unanswerable",
+    "difficulty": "easy"
+  },
+  {
+    "question": "What is the leave policy?",
+    "expected_answer": "The 2026 Leave Policy provides 20 days of annual leave, standard sick leaves, and parental leaves.",
+    "expected_documents": ["Leave_Policy_2026.pdf"],
+    "expected_sections": ["Vacation Time"],
+    "question_type": "straightforward",
+    "difficulty": "easy"
+  },
+  {
+    "question": "What about remote work?",
+    "expected_answer": "I couldn't find sufficient information in the knowledge base to answer this question.",
+    "expected_documents": [],
+    "expected_sections": [],
+    "question_type": "conversational",
+    "difficulty": "medium"
+  },
+  {
+    "question": "What is the sick leave allowance?",
+    "expected_answer": "The policy lists 10 days of fully paid sick leave annually.",
+    "expected_documents": ["Leave_Policy_2026.pdf"],
+    "expected_sections": ["Sick Leave"],
+    "question_type": "straightforward",
+    "difficulty": "easy"
+  },
+  {
+    "question": "Does the NDA restrict open source contributions?",
+    "expected_answer": "Yes, open source contributions of proprietary code are restricted under Article 4.",
+    "expected_documents": ["NDA.pdf"],
+    "expected_sections": ["Article 4"],
+    "question_type": "straightforward",
+    "difficulty": "medium"
+  },
+  {
+    "question": "What is the notice period for contract termination?",
+    "expected_answer": "A notice period of 30 days is required by both parties.",
+    "expected_documents": ["NDA.pdf", "Standard_Policy.pdf"],
+    "expected_sections": ["Article 9", "Cancellation"],
+    "question_type": "multi-section",
+    "difficulty": "hard"
+  },
+  {
+    "question": "What is the version of the leave policy we should follow?",
+    "expected_answer": "You must follow Version 2.0 (2026) of the Leave Policy.",
+    "expected_documents": ["Leave_Policy_2026.pdf"],
+    "expected_sections": ["General"],
+    "question_type": "version-conflict",
+    "difficulty": "medium"
+  },
+  {
+    "question": "How much can I reimburse for travel meals?",
+    "expected_answer": "You can reimburse up to $50 per day for meals during business travel.",
+    "expected_documents": ["Expense_Policy_2026.pdf"],
+    "expected_sections": ["Travel Expenses"],
+    "question_type": "straightforward",
+    "difficulty": "easy"
+  },
+  {
+    "question": "What is the maximum reimbursement limit for lodging?",
+    "expected_answer": "The lodging reimbursement is capped at $200 per night.",
+    "expected_documents": ["Expense_Policy_2026.pdf"],
+    "expected_sections": ["Travel Expenses"],
+    "question_type": "straightforward",
+    "difficulty": "easy"
+  },
+  {
+    "question": "Can I request reimbursement for personal phone calls during travel?",
+    "expected_answer": "No, personal expenses are not reimbursable under Section 3.",
+    "expected_documents": ["Expense_Policy_2026.pdf"],
+    "expected_sections": ["Travel Expenses"],
+    "question_type": "straightforward",
+    "difficulty": "medium"
+  },
+  {
+    "question": "What is standard cancellation?",
+    "expected_answer": "Standard plan cancellation requires 14 days advance notice for a 50% refund.",
+    "expected_documents": ["Standard_Policy.pdf"],
+    "expected_sections": ["Cancellation"],
+    "question_type": "straightforward",
+    "difficulty": "easy"
+  },
+  {
+    "question": "What about Enterprise cancellation?",
+    "expected_answer": "Enterprise plan cancellation requires 30 days notice for a full 100% refund.",
+    "expected_documents": ["Enterprise_Policy.pdf"],
+    "expected_sections": ["Cancellation"],
+    "question_type": "conversational",
+    "difficulty": "medium"
+  },
+  {
+    "question": "Is intellectual property shared under the NDA?",
+    "expected_answer": "No, Article 5 explicitly states that IP remains the sole property of the disclosing party.",
+    "expected_documents": ["NDA.pdf"],
+    "expected_sections": ["Article 5"],
+    "question_type": "straightforward",
+    "difficulty": "medium"
+  },
+  {
+    "question": "How long does confidentiality last after contract termination?",
+    "expected_answer": "The confidentiality obligations survive for 5 years after termination according to Article 7.",
+    "expected_documents": ["NDA.pdf"],
+    "expected_sections": ["Article 7"],
+    "question_type": "straightforward",
+    "difficulty": "medium"
+  },
+  {
+    "question": "What is the policy for bereavement leave?",
+    "expected_answer": "The Leave Policy provides 3 to 5 days of paid bereavement leave depending on relation.",
+    "expected_documents": ["Leave_Policy_2026.pdf"],
+    "expected_sections": ["Bereavement Leave"],
+    "question_type": "straightforward",
+    "difficulty": "easy"
+  },
+  {
+    "question": "Compare bereavement leave and sick leave allowances.",
+    "expected_answer": "Bereavement leave is 3-5 days per occurrence, whereas sick leave is 10 days allocated annually.",
+    "expected_documents": ["Leave_Policy_2026.pdf"],
+    "expected_sections": ["Bereavement Leave", "Sick Leave"],
+    "question_type": "multi-section",
+    "difficulty": "medium"
+  },
+  {
+    "question": "Can external contractors get access to HR benefits?",
+    "expected_answer": "I couldn't find sufficient information in the knowledge base to answer this question.",
+    "expected_documents": [],
+    "expected_sections": [],
+    "question_type": "unanswerable",
+    "difficulty": "easy"
+  },
+  {
+    "question": "What happens if a conflict of interest is discovered?",
+    "expected_answer": "Conflicts of interest must be disclosed immediately to HR or Compliance as per the Code of Conduct.",
+    "expected_documents": ["Code_of_Conduct.pdf"],
+    "expected_sections": ["Conflicts of Interest"],
+    "question_type": "straightforward",
+    "difficulty": "medium"
+  },
+  {
+    "question": "What is the penalty for violating the NDA?",
+    "expected_answer": "Article 10 states that NDA violations may result in injunctive relief and monetary damages.",
+    "expected_documents": ["NDA.pdf"],
+    "expected_sections": ["Article 10"],
+    "question_type": "straightforward",
+    "difficulty": "hard"
+  },
+  {
+    "question": "Who is the primary contact for ethical concerns?",
+    "expected_answer": "The Compliance Officer is the primary contact.",
+    "expected_documents": ["Code_of_Conduct.pdf"],
+    "expected_sections": ["Reporting Channels"],
+    "question_type": "straightforward",
+    "difficulty": "easy"
+  },
+  {
+    "question": "Compare travel meal reimbursement to lodging rules.",
+    "expected_answer": "Travel meals are capped at $50 per day (itemized), whereas lodging is capped at $200 per night.",
+    "expected_documents": ["Expense_Policy_2026.pdf"],
+    "expected_sections": ["Travel Expenses"],
+    "question_type": "multi-section",
+    "difficulty": "medium"
+  },
+  {
+    "question": "What is the annual leave allocation in the 2024 Leave Policy?",
+    "expected_answer": "The 2024 policy allocated 15 days, which is overridden by the 2026 update allocating 20 days.",
+    "expected_documents": ["Leave_Policy_2024.pdf", "Leave_Policy_2026.pdf"],
+    "expected_sections": ["Vacation Time"],
+    "question_type": "version-conflict",
+    "difficulty": "hard"
+  },
+  {
+    "question": "Is alcohol allowed at company offices?",
+    "expected_answer": "The Code of Conduct forbids alcohol consumption except during company-authorized social events.",
+    "expected_documents": ["Code_of_Conduct.pdf"],
+    "expected_sections": ["Workplace Safety"],
+    "question_type": "straightforward",
+    "difficulty": "medium"
+  },
+  {
+    "question": "What is the maximum reimbursement for international flights?",
+    "expected_answer": "I couldn't find sufficient information in the knowledge base to answer this question.",
+    "expected_documents": [],
+    "expected_sections": [],
+    "question_type": "unanswerable",
+    "difficulty": "easy"
+  },
+  {
+    "question": "Is maternity leave covered in the parental leave section?",
+    "expected_answer": "Yes, parental leave covers up to 12 weeks of paid maternity and paternity leave.",
+    "expected_documents": ["Leave_Policy_2026.pdf"],
+    "expected_sections": ["Parental Leave"],
+    "question_type": "straightforward",
+    "difficulty": "easy"
+  },
+  {
+    "question": "Compare parental leave to standard annual leave.",
+    "expected_answer": "Parental leave allows 12 weeks for new parents, whereas standard annual leave is 20 days per year.",
+    "expected_documents": ["Leave_Policy_2026.pdf"],
+    "expected_sections": ["Parental Leave", "Vacation Time"],
+    "question_type": "multi-section",
+    "difficulty": "hard"
+  }
+]

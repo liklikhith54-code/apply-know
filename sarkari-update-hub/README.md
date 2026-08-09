@@ -2,6 +2,8 @@
 
 A modern, responsive, full-stack government jobs, results, admit cards, and exams notifications portal.
 
+🌐 **Live Website:** [client-omega-plum.vercel.app](https://client-omega-plum.vercel.app)
+
 ---
 
 ## 🚀 Tech Stack

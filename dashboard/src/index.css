@@ -1,0 +1,144 @@
+:root {
+  /* Premium Dark Theme variables by default */
+  --bg-app: #07080d;
+  --bg-panel: rgba(16, 18, 27, 0.7);
+  --bg-panel-hover: rgba(25, 28, 42, 0.85);
+  --border-panel: rgba(255, 255, 255, 0.08);
+  --border-panel-hover: rgba(0, 242, 254, 0.25);
+  
+  --accent-cyan: #00f2fe;
+  --accent-purple: #aa30ff;
+  --accent-pink: #ff007f;
+  --accent-cyan-glow: rgba(0, 242, 254, 0.3);
+  --accent-purple-glow: rgba(170, 48, 255, 0.3);
+  
+  --text-main: #a9b2c3;
+  --text-title: #ffffff;
+  --text-muted: #5f6674;
+  
+  --shadow-main: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 15px rgba(0, 242, 254, 0.15);
+  
+  --font-sans: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: all 0.15s ease-out;
+  
+  box-sizing: border-box;
+}
+
+/* Light Theme overrides */
+.light-theme {
+  --bg-app: #f4f5f9;
+  --bg-panel: rgba(255, 255, 255, 0.75);
+  --bg-panel-hover: rgba(255, 255, 255, 0.95);
+  --border-panel: rgba(0, 0, 0, 0.06);
+  --border-panel-hover: rgba(123, 31, 162, 0.2);
+  
+  --accent-cyan: #007896;
+  --accent-purple: #7b1fa2;
+  --accent-pink: #c2185b;
+  --accent-cyan-glow: rgba(0, 120, 150, 0.15);
+  --accent-purple-glow: rgba(123, 31, 162, 0.15);
+  
+  --text-main: #4a5568;
+  --text-title: #1a202c;
+  --text-muted: #8a99ad;
+  
+  --shadow-main: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
+  --shadow-glow: 0 4px 12px rgba(123, 31, 162, 0.1);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-app);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  transition: background-color 0.4s ease;
+}
+
+* {
+  box-sizing: inherit;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-panel);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-cyan);
+}
+
+/* Glassmorphism panel base */
+.glass-panel {
+  background: var(--bg-panel);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-panel);
+  border-radius: 16px;
+  box-shadow: var(--shadow-main);
+  transition: var(--transition-smooth);
+}
+
+.glass-panel:hover {
+  border-color: var(--border-panel-hover);
+  box-shadow: var(--shadow-main), var(--shadow-glow);
+}
+
+/* Interactive elements */
+button, .btn {
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+/* Neon Text Accents */
+.text-glow-cyan {
+  text-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+  color: var(--accent-cyan);
+}
+.text-glow-purple {
+  text-shadow: 0 0 10px rgba(170, 48, 255, 0.5);
+  color: var(--accent-purple);
+}
+
+/* Grids & Layout Utility */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Glow rings keyframes */
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 5px var(--accent-cyan-glow);
+  }
+  50% {
+    box-shadow: 0 0 15px var(--accent-cyan-glow);
+  }
+  100% {
+    box-shadow: 0 0 5px var(--accent-cyan-glow);
+  }
+}
+.pulse-glow {
+  animation: pulseGlow 2s infinite ease-in-out;
+}

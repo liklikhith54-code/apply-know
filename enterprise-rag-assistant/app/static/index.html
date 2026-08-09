@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Enterprise RAG Knowledge Assistant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/static/app.css"/>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════ SIDEBAR ═══ -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <span class="brand-icon">⬡</span>
+    <div>
+      <div class="brand-name">RAG Assistant</div>
+      <div class="brand-sub">Enterprise Knowledge</div>
+    </div>
+  </div>
+
+  <div class="mode-badge" id="modeBadge">
+    <span class="pulse"></span> Loading...
+  </div>
+
+  <div class="nav-section-label">WORKSPACE</div>
+  <nav class="nav-links">
+    <a href="#" class="nav-item active" data-page="dashboard" onclick="navigate('dashboard')">
+      <span class="nav-icon">⊞</span> Dashboard
+    </a>
+    <a href="#" class="nav-item" data-page="chat" onclick="navigate('chat')">
+      <span class="nav-icon">◈</span> RAG Chatbot
+    </a>
+    <a href="#" class="nav-item" data-page="kb" onclick="navigate('kb')">
+      <span class="nav-icon">◫</span> Knowledge Base
+    </a>
+    <a href="#" class="nav-item" data-page="diagnostics" onclick="navigate('diagnostics')">
+      <span class="nav-icon">◉</span> RAG Diagnostics
+    </a>
+  </nav>
+
+  <div class="nav-section-label">ANALYSIS</div>
+  <nav class="nav-links">
+    <a href="#" class="nav-item" data-page="failures" onclick="navigate('failures')">
+      <span class="nav-icon">◬</span> Failure Scenarios
+    </a>
+    <a href="#" class="nav-item" data-page="evaluation" onclick="navigate('evaluation')">
+      <span class="nav-icon">◎</span> Evaluation
+    </a>
+  </nav>
+
+  <div class="nav-section-label">ARCHITECTURE</div>
+  <nav class="nav-links">
+    <a href="#" class="nav-item" data-page="architecture" onclick="navigate('architecture')">
+      <span class="nav-icon">◱</span> Architecture
+    </a>
+    <a href="#" class="nav-item" data-page="security" onclick="navigate('security')">
+      <span class="nav-icon">◪</span> Security
+    </a>
+    <a href="#" class="nav-item" data-page="problemsolving" onclick="navigate('problemsolving')">
+      <span class="nav-icon">◧</span> Problem Solving
+    </a>
+    <a href="#" class="nav-item" data-page="azurestatus" onclick="navigate('azurestatus')">
+      <span class="nav-icon">◌</span> Azure Status
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="footer-test-badge" id="testBadge">⬤ Tests: —</div>
+    <div class="footer-version">v1.0.0 · Azure RAG</div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════ MAIN CONTENT ═══ -->
+<main class="main" id="main">
+
+  <!-- Mobile header -->
+  <div class="mobile-header">
+    <button class="hamburger" onclick="toggleSidebar()">☰</button>
+    <span class="mobile-title">Enterprise RAG</span>
+  </div>
+
+  <!-- ─────── PAGE: DASHBOARD ─────── -->
+  <section id="page-dashboard" class="page active">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Engineering Dashboard</h1>
+        <p class="page-sub">Live system status and knowledge base metrics</p>
+      </div>
+      <button class="btn btn-primary" onclick="loadDashboard()">↺ Refresh</button>
+    </div>
+
+    <div class="stat-grid" id="dashStats">
+      <div class="stat-card loading-pulse"><div class="stat-val">—</div><div class="stat-lbl">Documents</div></div>
+      <div class="stat-card loading-pulse"><div class="stat-val">—</div><div class="stat-lbl">Chunks Indexed</div></div>
+      <div class="stat-card loading-pulse"><div class="stat-val">—</div><div class="stat-lbl">Eval Questions</div></div>
+      <div class="stat-card loading-pulse"><div class="stat-val">—</div><div class="stat-lbl">Test Files</div></div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Azure Service Status</div>
+        <div id="dashServices" class="service-list">
+          <div class="service-row loading-pulse"><span>Azure OpenAI</span><span>—</span></div>
+          <div class="service-row loading-pulse"><span>Azure AI Search</span><span>—</span></div>
+          <div class="service-row loading-pulse"><span>Azure Blob Storage</span><span>—</span></div>
+          <div class="service-row loading-pulse"><span>Application Insights</span><span>—</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Knowledge Base Summary</div>
+        <div id="dashKB" class="kv-list">
+          <div class="kv-row loading-pulse"><span>Search Index</span><span>—</span></div>
+          <div class="kv-row loading-pulse"><span>Embedding Dimensions</span><span>—</span></div>
+          <div class="kv-row loading-pulse"><span>Last Ingestion</span><span>—</span></div>
+          <div class="kv-row loading-pulse"><span>Service Mode</span><span>—</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <div class="card-title">RAG Pipeline Health</div>
+      <div class="pipeline-mini">
+        <div class="pipe-step done">📄 Documents</div><div class="pipe-arrow">→</div>
+        <div class="pipe-step done">🔪 Chunking</div><div class="pipe-arrow">→</div>
+        <div class="pipe-step done">🧮 Embeddings</div><div class="pipe-arrow">→</div>
+        <div class="pipe-step done">🔍 Hybrid Search</div><div class="pipe-arrow">→</div>
+        <div class="pipe-step done">🏆 Reranking</div><div class="pipe-arrow">→</div>
+        <div class="pipe-step done">🛡️ Confidence</div><div class="pipe-arrow">→</div>
+        <div class="pipe-step done">🤖 Generation</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────── PAGE: RAG CHAT ─────── -->
+  <section id="page-chat" class="page">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">RAG Chatbot</h1>
+        <p class="page-sub">Enterprise knowledge assistant with citations, confidence scoring, and pipeline trace</p>
+      </div>
+      <button class="btn btn-outline" onclick="clearChat()">✕ Clear</button>
+    </div>
+
+    <div class="chat-layout">
+      <!-- Chat panel -->
+      <div class="chat-panel">
+        <div class="chat-messages" id="chatMessages">
+          <div class="chat-empty">
+            <div class="empty-icon">◈</div>
+            <div class="empty-title">Ask the knowledge assistant</div>
+            <div class="empty-sub">Connected to FastAPI backend · POST /api/v1/chat</div>
+            <div class="example-queries">
+              <button class="example-btn" onclick="fillQuery('What is the 2026 leave policy?')">What is the 2026 leave policy?</button>
+              <button class="example-btn" onclick="fillQuery('How many vacation days are employees entitled to?')">How many vacation days per year?</button>
+              <button class="example-btn" onclick="fillQuery('What is the notice period for leave requests?')">Leave request notice period?</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="chat-controls">
+          <div class="chat-settings-row">
+            <select id="chatDept" class="mini-select">
+              <option value="">No Dept Filter</option>
+              <option value="HR">HR</option>
+              <option value="Engineering">Engineering</option>
+              <option value="Finance">Finance</option>
+            </select>
+            <select id="chatGroups" class="mini-select">
+              <option value="ALL">All Groups</option>
+              <option value="HR">HR Only</option>
+              <option value="ADMIN">Admin Only</option>
+            </select>
+            <select id="chatSearchMode" class="mini-select">
+              <option value="hybrid">Hybrid Search (RRF)</option>
+              <option value="vector">Vector Search (Cosine)</option>
+              <option value="keyword">Keyword Search (Jaccard)</option>
+            </select>
+            <div class="setting-item-inline" style="display:flex;align-items:center;gap:6px">
+              <span style="font-size:11px;color:var(--text-muted)">Chunks:</span>
+              <select id="chatTopK" class="mini-select" style="width:60px">
+                <option value="3">3</option>
+                <option value="5" selected>5</option>
+                <option value="8">8</option>
+              </select>
+            </div>
+          </div>
+          <div class="chat-input-row">
+            <textarea id="chatInput" class="chat-input" rows="2"
+              placeholder="Ask a question about enterprise documents..."
+              onkeydown="handleChatKey(event)"></textarea>
+            <button class="send-btn" id="sendBtn" onclick="sendChat()">
+              <span id="sendBtnIcon">➤</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pipeline trace panel -->
+      <div class="pipeline-panel">
+        <div class="panel-title">Pipeline Trace</div>
+        <div id="pipelineTrace" class="pipeline-trace">
+          <div class="trace-empty">Send a message to see<br/>the RAG pipeline trace</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────── PAGE: KNOWLEDGE BASE ─────── -->
+  <section id="page-kb" class="page">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Knowledge Base</h1>
+        <p class="page-sub">Document inventory, ingestion pipeline, and index status</p>
+      </div>
+      <button class="btn btn-primary" onclick="runIngest()" id="ingestBtn">⚡ Ingest Documents</button>
+    </div>
+
+    <div id="ingestResult" class="ingest-result" style="display:none"></div>
+
+    <div class="card">
+      <div class="card-title">Documents <span id="docCountBadge" class="count-badge">—</span></div>
+      <div id="docTable" class="doc-table-wrap">
+        <div class="loading-msg">Loading document list...</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <div class="card-title">Ingestion Pipeline</div>
+      <div class="pipeline-mini">
+        <div class="pipe-step">☁️ Blob Storage</div><div class="pipe-arrow">→</div>
+        <div class="pipe-step">📄 Parser</div><div class="pipe-arrow">→</div>
+        <div class="pipe-step">🔪 Chunker</div><div class="pipe-arrow">→</div>
+        <div class="pipe-step">🏷️ Metadata</div><div class="pipe-arrow">→</div>
+        <div class="pipe-step">🧮 Embeddings</div><div class="pipe-arrow">→</div>
+        <div class="pipe-step">🔍 AI Search Index</div>
+      </div>
+      <p class="note-text">In MOCK MODE: reads from <code>data/documents/</code>, writes to <code>data/mock_index.json</code>. In AZURE MODE: reads from Azure Blob Storage, writes to Azure AI Search index.</p>
+    </div>
+  </section>
+
+  <!-- ─────── PAGE: DIAGNOSTICS ─────── -->
+  <section id="page-diagnostics" class="page">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">RAG Diagnostics</h1>
+        <p class="page-sub">Deep query trace — inspect every stage of the retrieval and generation pipeline</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Run Diagnostic Query</div>
+      <div class="diag-input-row">
+        <input id="diagQuery" class="text-input" type="text"
+          placeholder="Enter a query to trace through the full RAG pipeline..."
+          value="What is the 2026 leave policy?"/>
+        <select id="diagDept" class="mini-select">
+          <option value="">No Dept</option>
+          <option value="HR">HR</option>
+          <option value="Engineering">Engineering</option>
+        </select>
+        <button class="btn btn-primary" onclick="runDiagnostic()">▶ Trace</button>
+      </div>
+    </div>
+
+    <div id="diagResult" class="diag-result" style="display:none">
+      <div class="grid-2" style="margin-bottom:16px">
+        <div class="card">
+          <div class="card-title">Query Analysis</div>
+          <div id="diagQueryPanel" class="kv-list"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Pipeline Metrics</div>
+          <div id="diagMetrics" class="kv-list"></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-title">Full Pipeline Trace</div>
+        <div id="diagPipeline" class="pipeline-trace"></div>
+      </div>
+
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-title">Retrieved Chunks <span id="diagChunkCount" class="count-badge">0</span></div>
+        <div id="diagChunks" class="chunks-list"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Generated Answer</div>
+        <div id="diagAnswer" class="answer-block"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────── PAGE: FAILURE SCENARIOS ─────── -->
+  <section id="page-failures" class="page">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Failure Scenarios</h1>
+        <p class="page-sub">Six RAG failure patterns — reproduced, diagnosed, and fixed</p>
+      </div>
+    </div>
+
+    <div class="scenario-tabs">
+      <button class="stab active" onclick="showScenario(1, this)">S1: Chunk Granularity</button>
+      <button class="stab" onclick="showScenario(2, this)">S2: Multi-Doc</button>
+      <button class="stab" onclick="showScenario(3, this)">S3: Version Conflict</button>
+      <button class="stab" onclick="showScenario(4, this)">S4: Hallucination</button>
+      <button class="stab" onclick="showScenario(5, this)">S5: Ambiguity</button>
+      <button class="stab" onclick="showScenario(6, this)">S6: Context</button>
+    </div>
+
+    <div id="scenario-content"></div>
+  </section>
+
+  <!-- ─────── PAGE: EVALUATION ─────── -->
+  <section id="page-evaluation" class="page">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">RAG Evaluation</h1>
+        <p class="page-sub">Baseline vs Improved RAG — actual results from <code>evaluation/results/</code></p>
+      </div>
+      <span class="badge-local">LOCAL / MOCK EVALUATION</span>
+    </div>
+
+    <div id="evalContent">
+      <div class="loading-msg">Loading evaluation results...</div>
+    </div>
+  </section>
+
+  <!-- ─────── PAGE: ARCHITECTURE ─────── -->
+  <section id="page-architecture" class="page">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">System Architecture</h1>
+        <p class="page-sub">End-to-end Azure RAG architecture — query flow and ingestion flow</p>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">🔍 Online Query Flow</div>
+        <div class="arch-flow">
+<div class="arch-node user">👤 User</div>
+<div class="arch-arrow">↓ HTTPS + JWT</div>
+<div class="arch-node azure">🔑 Microsoft Entra ID<br/><small>OAuth 2.0 · Group Claims · RBAC</small></div>
+<div class="arch-arrow">↓ user_groups, department</div>
+<div class="arch-node app">⚡ FastAPI Application<br/><small>POST /api/v1/chat</small></div>
+<div class="arch-arrow">↓ Rewrite query</div>
+<div class="arch-node proc">✏️ Query Rewriter<br/><small>GPT-4o · conversational context</small></div>
+<div class="arch-arrow">↓ standalone query</div>
+<div class="arch-node search">🔍 Azure AI Search<br/><small>Keyword + Vector + Semantic Ranking<br/>OData ACL pre-filter</small></div>
+<div class="arch-arrow">↓ ranked chunks</div>
+<div class="arch-node proc">📊 Confidence Scorer<br/><small>RRF + Rerank + Coverage → HIGH/MEDIUM/LOW</small></div>
+<div class="arch-arrow">↓ sufficient evidence?</div>
+<div class="arch-node ai">🤖 Azure OpenAI GPT-4o<br/><small>Grounded answer · no hallucination</small></div>
+<div class="arch-arrow">↓</div>
+<div class="arch-node done">✅ Grounded Answer + Citations</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📥 Offline Ingestion Flow</div>
+        <div class="arch-flow">
+<div class="arch-node user">📄 Enterprise Documents<br/><small>PDF · DOCX · TXT</small></div>
+<div class="arch-arrow">↓</div>
+<div class="arch-node azure">☁️ Azure Blob Storage<br/><small>Blob container · secure access</small></div>
+<div class="arch-arrow">↓ download</div>
+<div class="arch-node app">🔧 Document Parser<br/><small>pypdf · docx2txt · plain text</small></div>
+<div class="arch-arrow">↓</div>
+<div class="arch-node proc">🔪 Text Chunker<br/><small>configurable size · overlap · metadata</small></div>
+<div class="arch-arrow">↓</div>
+<div class="arch-node proc">🏷️ Metadata Enrichment<br/><small>version · effective_date · department · access_groups</small></div>
+<div class="arch-arrow">↓</div>
+<div class="arch-node ai">🧮 Azure OpenAI Embeddings<br/><small>text-embedding-3-large · configurable dims</small></div>
+<div class="arch-arrow">↓ float[1536]</div>
+<div class="arch-node search">🔍 Azure AI Search Index<br/><small>vector + keyword fields · semantic config</small></div>
+<div class="arch-arrow">↓</div>
+<div class="arch-node done">✅ Knowledge Base Ready</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <div class="card-title">🏗️ Infrastructure</div>
+      <div class="infra-grid">
+        <div class="infra-card azure-card">
+          <div class="infra-icon">🔑</div>
+          <div class="infra-name">Azure Key Vault</div>
+          <div class="infra-desc">Secrets management, API keys, connection strings — never in code</div>
+          <span class="badge-arch">PRODUCTION</span>
+        </div>
+        <div class="infra-card azure-card">
+          <div class="infra-icon">📡</div>
+          <div class="infra-name">Application Insights</div>
+          <div class="infra-desc">Request traces, latency, token usage, errors — structured telemetry</div>
+          <span class="badge-arch">CONFIGURED</span>
+        </div>
+        <div class="infra-card azure-card">
+          <div class="infra-icon">🐳</div>
+          <div class="infra-name">Azure App Service</div>
+          <div class="infra-desc">Container hosting, auto-scale, managed identity, health probes</div>
+          <span class="badge-arch">DEPLOY READY</span>
+        </div>
+        <div class="infra-card azure-card">
+          <div class="infra-icon">🔐</div>
+          <div class="infra-name">Microsoft Entra ID</div>
+          <div class="infra-desc">OAuth 2.0, JWT claims, group-based RBAC, managed identity</div>
+          <span class="badge-arch">ARCHITECTURE READY</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────── PAGE: SECURITY ─────── -->
+  <section id="page-security" class="page">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Security & Access Control</h1>
+        <p class="page-sub">Document-level authorization enforced before LLM context assembly</p>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">ACL Enforcement Flow</div>
+        <div class="arch-flow">
+<div class="arch-node user">👤 User Request</div>
+<div class="arch-arrow">↓ JWT Bearer Token</div>
+<div class="arch-node azure">🔑 Microsoft Entra ID<br/><small>Validates token, extracts group claims</small></div>
+<div class="arch-arrow">↓ {user_groups: ["HR","ALL"], department: "HR"}</div>
+<div class="arch-node app">⚡ FastAPI Route<br/><small>Passes claims to retriever</small></div>
+<div class="arch-arrow">↓ pre-retrieval filter</div>
+<div class="arch-node search">🔍 Azure AI Search<br/><small>OData filter: access_groups/any(g: g eq 'HR' or g eq 'ALL')</small></div>
+<div class="arch-arrow">↓ ONLY authorized chunks</div>
+<div class="arch-node proc">📋 Context Builder<br/><small>Unauthorized documents NEVER enter prompt</small></div>
+<div class="arch-arrow">↓</div>
+<div class="arch-node ai">🤖 Azure OpenAI<br/><small>Sees only authorized content</small></div>
+<div class="arch-arrow">↓</div>
+<div class="arch-node done">✅ Authorized Answer</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Live ACL Demo</div>
+        <div class="acl-demo">
+          <div class="acl-section-title">Document Metadata</div>
+          <div class="doc-acl-card">
+            <div class="doc-name">HR_Leave_2026.txt</div>
+            <div class="acl-tags">
+              <span class="acl-tag">HR</span>
+              <span class="acl-tag">ADMIN</span>
+              <span class="acl-tag">ALL</span>
+            </div>
+          </div>
+
+          <div class="acl-section-title" style="margin-top:20px">Test Access</div>
+          <div class="acl-test-row">
+            <div class="acl-user">
+              <div class="acl-user-label">👤 HR Employee</div>
+              <div class="acl-user-groups">Groups: HR, ALL</div>
+              <div class="acl-result pass">✅ ACCESS GRANTED</div>
+              <div class="acl-detail">Matched: HR ∈ [HR, ADMIN, ALL]</div>
+            </div>
+            <div class="acl-user">
+              <div class="acl-user-label">👤 Engineering Employee</div>
+              <div class="acl-user-groups">Groups: ENGINEERING, ALL</div>
+              <div class="acl-result pass">✅ ACCESS GRANTED</div>
+              <div class="acl-detail">Matched: ALL ∈ [HR, ADMIN, ALL]</div>
+            </div>
+          </div>
+
+          <div class="acl-test-row" style="margin-top:12px">
+            <div class="acl-user full-width">
+              <div class="acl-user-label">👤 Restricted User</div>
+              <div class="acl-user-groups">Groups: RESTRICTED</div>
+              <div class="acl-result fail">🚫 ACCESS DENIED</div>
+              <div class="acl-detail">OData filter returns 0 chunks → No LLM context</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-title" style="margin-top:24px">Security Principles</div>
+        <div class="security-list">
+          <div class="sec-item"><span class="sec-icon">🔐</span><div><strong>Least Privilege</strong> — Users see only documents matching their group claims</div></div>
+          <div class="sec-item"><span class="sec-icon">🛡️</span><div><strong>Pre-LLM Enforcement</strong> — ACL is applied at retrieval, not after generation</div></div>
+          <div class="sec-item"><span class="sec-icon">🔑</span><div><strong>Key Vault</strong> — All secrets in Azure Key Vault, never in code or env files</div></div>
+          <div class="sec-item"><span class="sec-icon">🎭</span><div><strong>Managed Identity</strong> — App Service uses MI to access Azure resources without API keys</div></div>
+          <div class="sec-item"><span class="sec-icon">📝</span><div><strong>Audit Logging</strong> — All requests logged with RequestID, user group, document accessed</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────── PAGE: PROBLEM SOLVING ─────── -->
+  <section id="page-problemsolving" class="page">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Problem Solving</h1>
+        <p class="page-sub">Six architectural engineering questions answered with implementation detail</p>
+      </div>
+    </div>
+
+    <div class="qa-list" id="qaList"></div>
+  </section>
+
+  <!-- ─────── PAGE: AZURE STATUS ─────── -->
+  <section id="page-azurestatus" class="page">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Azure Status</h1>
+        <p class="page-sub">Real connection status — never claims connected without verification</p>
+      </div>
+      <button class="btn btn-primary" onclick="loadStatus()">↺ Refresh</button>
+    </div>
+
+    <div id="statusContent">
+      <div class="loading-msg">Checking service status...</div>
+    </div>
+  </section>
+
+</main>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

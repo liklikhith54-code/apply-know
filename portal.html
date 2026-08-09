@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workspace Portal Hub | MapSphere & AuraSphere</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-app: #060713;
+      --bg-card: rgba(22, 24, 47, 0.65);
+      --border-card: rgba(255, 255, 255, 0.08);
+      --text-main: #a2b0c9;
+      --text-title: #ffffff;
+      --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+      background-color: var(--bg-app);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Ambient background blobs */
+    .blob {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      filter: blur(150px);
+      z-index: -1;
+      opacity: 0.25;
+    }
+    .blob-1 {
+      background: #00f2fe;
+      top: -10%;
+      left: 10%;
+    }
+    .blob-2 {
+      background: #7b1fa2;
+      bottom: -10%;
+      right: 10%;
+    }
+
+    .container {
+      max-width: 1100px;
+      width: 90%;
+      text-align: center;
+      padding: 40px 0;
+      z-index: 10;
+    }
+
+    h1 {
+      font-size: 42px;
+      font-weight: 800;
+      color: var(--text-title);
+      margin: 0 0 10px 0;
+      letter-spacing: -1px;
+    }
+
+    h1 span {
+      background: linear-gradient(135deg, #00f2fe 0%, #aa30ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: var(--text-main);
+      margin-bottom: 50px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.5;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 25px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-card);
+      border-radius: 20px;
+      padding: 35px 25px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: transparent;
+      transition: var(--transition);
+    }
+
+    .card.gis::before { background: #10b981; }
+    .card.dash::before { background: #aa30ff; }
+    .card.rag::before { background: #00f2fe; }
+
+    .card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 242, 254, 0.1);
+    }
+
+    .icon-box {
+      width: 65px;
+      height: 65px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      font-size: 28px;
+    }
+
+    .card.gis .icon-box { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+    .card.dash .icon-box { background: rgba(170, 48, 255, 0.1); color: #aa30ff; }
+    .card.rag .icon-box { background: rgba(0, 242, 254, 0.1); color: #00f2fe; }
+
+    h3 {
+      font-size: 22px;
+      margin: 0 0 12px 0;
+      color: var(--text-title);
+      font-weight: 700;
+    }
+
+    p {
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 0 0 30px 0;
+      flex-grow: 1;
+    }
+
+    .btn {
+      display: inline-block;
+      text-decoration: none;
+      padding: 12px 30px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 14px;
+      width: calc(100% - 60px);
+      box-sizing: border-box;
+      transition: var(--transition);
+      text-align: center;
+    }
+
+    .card.gis .btn { background: #10b981; color: #fff; }
+    .card.gis .btn:hover { background: #059669; box-shadow: 0 0 15px rgba(16, 185, 129, 0.4); }
+
+    .card.dash .btn { background: #aa30ff; color: #fff; }
+    .card.dash .btn:hover { background: #8e1fe6; box-shadow: 0 0 15px rgba(170, 48, 255, 0.4); }
+
+    .card.rag .btn { background: #00f2fe; color: #060713; }
+    .card.rag .btn:hover { background: #00c8d4; box-shadow: 0 0 15px rgba(0, 242, 254, 0.4); }
+
+    .docs-link {
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--text-main);
+      text-decoration: underline;
+      transition: var(--transition);
+    }
+    .docs-link:hover {
+      color: var(--text-title);
+    }
+  </style>
+</head>
+<body>
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+
+  <div class="container">
+    <h1><span>AuraSphere</span> Central Portal</h1>
+    <div class="subtitle">Secure workspace landing page linking all geospatial, operations, and document RAG pipelines.</div>
+
+    <div class="grid">
+      <!-- GIS Workspace -->
+      <div class="card gis">
+        <div class="icon-box">🗺️</div>
+        <h3>MapSphere GIS</h3>
+        <p>Interactive Leaflet maps visualizer, custom categorized markers, auto-completes suggestions, and coordinate explorers.</p>
+        <a href="http://localhost:8080/index.html" class="btn" target="_blank">Launch GIS Map</a>
+      </div>
+
+      <!-- Dashboard Workspace -->
+      <div class="card dash">
+        <div class="icon-box">📊</div>
+        <h3>AuraSphere Dashboard</h3>
+        <p>Modern React operational dashboard tracking metrics, custom SVG graph overlays, system load gauges, and a todo manager.</p>
+        <a href="http://localhost:5173" class="btn" target="_blank">Open Dashboard</a>
+      </div>
+
+      <!-- Document Search RAG -->
+      <div class="card rag">
+        <div class="icon-box">🤖</div>
+        <h3>Knowledge RAG</h3>
+        <p>Technical technical workspace query engine with conversational rewriters, date-version authoritative filters, and citations.</p>
+        <a href="http://localhost:8000" class="btn" target="_blank">Query Assistant</a>
+        <a href="http://localhost:8000/docs" class="docs-link" target="_blank">Open OpenAPI / Swagger Docs</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
